@@ -114,13 +114,23 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
         'USER': os.environ.get('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '46864238'),
         'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+    }
+} """
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
+        'USER': os.environ.get('POSTGRES_USER', 'card_blog_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'f9mzNnelcyGr7kgMGNcb7hymLkTLWQy1'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'dpg-ceqv9ucgqg486p659lr0-a'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
