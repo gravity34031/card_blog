@@ -6,6 +6,7 @@ charset-normalizer==2.1.1
 cleo==2.0.1
 crashtest==0.4.1
 distlib==0.3.6
+dj-database-url==1.2.0
 Django==3.2.16
 django-braces==1.15.0
 django-ckeditor==6.3.2
