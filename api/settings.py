@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
@@ -124,7 +124,7 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
-}
+} """
 """ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -135,13 +135,13 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 } """
-""" DATABASES = {
+DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
-        default='postgres://card_blog_user:f9mzNnelcyGr7kgMGNcb7hymLkTLWQy1@dpg-ceqv9ucgqg486p659lr0-a/card_blog',
+        default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a/card_blog_1vre',
         conn_max_age=600
     )
-} """
+}
 """ DATABASES = {
     'default': dj_database_url.config()
 } """
