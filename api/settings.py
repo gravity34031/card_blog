@@ -29,9 +29,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-mbyx)7q_o#7)6y6tk3$7u
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 if os.environ.get('DJANGO_DEBUG', False):
-    DEBUG = True
-else:
     DEBUG = False
+else:
+    DEBUG = True
+
 
 ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1']
 
