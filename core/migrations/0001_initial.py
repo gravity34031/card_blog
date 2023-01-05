@@ -15,7 +15,6 @@ class Migration(migrations.Migration):
     dependencies = [
         ('taggit', '0005_auto_20220424_2025'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('photologue', '0019_remove_photo_img_path'),
     ]
 
     operations = [
