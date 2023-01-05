@@ -135,12 +135,15 @@ WSGI_APPLICATION = 'api.wsgi.application'
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 } """
-DATABASES = {
+""" DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
         default='postgres://card_blog_user:f9mzNnelcyGr7kgMGNcb7hymLkTLWQy1@dpg-ceqv9ucgqg486p659lr0-a/card_blog',
         conn_max_age=600
     )
+} """
+DATABASES = {
+    'default': dj_database_url.config()
 }
 
 
