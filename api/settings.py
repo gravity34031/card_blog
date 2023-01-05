@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
@@ -124,7 +124,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
         'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
-} """
+}
 """ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -142,9 +142,9 @@ WSGI_APPLICATION = 'api.wsgi.application'
         conn_max_age=600
     )
 } """
-DATABASES = {
+""" DATABASES = {
     'default': dj_database_url.config()
-}
+} """
 
 
 # Password validation
