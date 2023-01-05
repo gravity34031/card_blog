@@ -135,10 +135,19 @@ WSGI_APPLICATION = 'api.wsgi.application'
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 } """
-DATABASES = {
+#internal
+""" DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
         default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a/card_blog_1vre',
+        conn_max_age=600
+    )
+} """
+#external
+DATABASES = {
+    'default': dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a.frankfurt-postgres.render.com/card_blog_1vre',
         conn_max_age=600
     )
 }
