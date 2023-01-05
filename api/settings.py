@@ -27,7 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-mbyx)7q_o#7)6y6tk3$7ujhjdld-vo7@2_ozo-sts(o&&(f7vp')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+#DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+if os.environ.get('DJANGO_DEBUG', False):
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1']
 
@@ -136,21 +140,21 @@ WSGI_APPLICATION = 'api.wsgi.application'
     }
 } """
 #internal
-DATABASES = {
+""" DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
         default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a/card_blog_1vre',
         conn_max_age=600
     )
-}
+} """
 #external
-""" DATABASES = {
+DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
         default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a.frankfurt-postgres.render.com/card_blog_1vre',
         conn_max_age=600
     )
-} """
+}
 """ DATABASES = {
     'default': dj_database_url.config()
 } """
@@ -204,16 +208,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # PHOTOLOGUE
 PHOTOLOGUE_IMAGE_FIELD_MAX_LENGTH = 128
 
-
-
-
-
-""" EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gravity2507@gmail.com'
-EMAIL_HOST_PASSWORD = 'ohkmvjkuvujpvukw' """
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
