@@ -15,6 +15,7 @@ from datetime import timedelta
 import os
 import dj_database_url
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -120,7 +121,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
@@ -129,25 +130,15 @@ WSGI_APPLICATION = 'api.wsgi.application'
         'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
-} """
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
-        'USER': os.environ.get('POSTGRES_USER', 'card_blog_user'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'f9mzNnelcyGr7kgMGNcb7hymLkTLWQy1'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'dpg-ceqv9ucgqg486p659lr0-a'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-    }
-} """
+}
 #internal
-DATABASES = {
+""" DATABASES = {
     'default': dj_database_url.config(
         # Feel free to alter this value to suit your needs.
         default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a/card_blog_1vre',
         conn_max_age=600
     )
-}
+} """
 #external
 """ DATABASES = {
     'default': dj_database_url.config(
@@ -155,9 +146,6 @@ DATABASES = {
         default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a.frankfurt-postgres.render.com/card_blog_1vre',
         conn_max_age=600
     )
-} """
-""" DATABASES = {
-    'default': dj_database_url.config()
 } """
 
 
@@ -214,8 +202,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'gravity2507@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ohkmvjkuvujpvukw')
 
 
 
