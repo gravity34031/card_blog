@@ -135,7 +135,7 @@ class PostBlogSerializer(TaggitSerializer, serializers.ModelSerializer):
         }
 
 class AddPostBlogSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=True)
     author = serializers.SlugRelatedField(slug_field='username', queryset=User.objects.all())
     favourite = FavouriteUserSerializer(read_only=True, many=True)
     images = serializers.SlugRelatedField(slug_field='slug', queryset=Gallery.objects.all())

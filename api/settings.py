@@ -35,7 +35,7 @@ else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1', '172.16.44.156']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'debug_toolbar',
     'rest_framework',
     'core',
     'photologue_custom',
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 
@@ -82,7 +84,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
 }
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000"]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000", "http://172.16.44.156:3000"]
 # Конец JWT токена
 
 # Настройки rest framework
@@ -206,8 +208,10 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'gravity2507@gmail.com')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ohkmvjkuvujpvukw')
 
 
-
-
+# debug_toolbar
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 
 CKEDITOR_UPLOAD_PATH = "uploads/"

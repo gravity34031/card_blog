@@ -60,7 +60,7 @@ class AddGalleryView(generics.CreateAPIView):
     lookup_field = 'slug'
     permission_classes = [IsAdminOrReadOnly] """
 class GalleryViewSet(viewsets.ModelViewSet):
-    queryset = Gallery.objects.all()
+    queryset = Gallery.objects.prefetch_related('photos').all()
     serializer_class = GetGallerySerializer
     lookup_field = 'slug'
     permission_classes = [IsAdminOrReadOnly]
@@ -96,7 +96,7 @@ class GetUpdDelPhotoView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PostBlogViewSet(viewsets.ModelViewSet):
-    queryset = PostBlog.objects.all()
+    queryset = PostBlog.objects.select_related('images', 'author').prefetch_related('favourite', 'tags').all()
     serializer_class = PostBlogSerializer
     lookup_field = 'slug'
     pagination_class = PostBlogSetPagination
@@ -164,7 +164,7 @@ class AddViewsToPostBlogView(generics.GenericAPIView):
 
 
 class SearchPostsForReviewView(generics.ListAPIView):
-    queryset = PostBlog.objects.all()
+    queryset = PostBlog.objects.select_related('author', 'images').prefetch_related('tags', 'favourite').all()
     serializer_class = PostBlogSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [filters.SearchFilter]
@@ -181,7 +181,7 @@ class SearchPostsForReviewView(generics.ListAPIView):
 
 
 class PostNewsViewSet(viewsets.ModelViewSet):
-    queryset = PostNews.objects.all()
+    queryset = PostNews.objects.select_related('author').all()
     serializer_class = PostNewsSerializer
     lookup_field = 'slug'
     pagination_class = NewsSetPagination
@@ -246,14 +246,14 @@ class TagsViewList(generics.ListAPIView):
 
 
 class AsideBlogViewList(generics.ListAPIView):
-    queryset = PostBlog.objects.all().order_by('-created_at')[:3]
+    queryset = PostBlog.objects.select_related('images', 'author').prefetch_related('favourite', 'tags').all().order_by('-created_at')[:3]
     serializer_class = PostBlogSerializer
     permission_classes = [permissions.AllowAny]
 
 
 
 class AsideNewsViewList(generics.ListAPIView):
-    queryset = PostNews.objects.all().order_by('-created_at')[:3]
+    queryset = PostNews.objects.select_related('author').all().order_by('-created_at')[:3]
     serializer_class = PostNewsSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -279,7 +279,7 @@ class AddFavouritePostView(APIView):
         return Response({'detail': 'Уже удален'}, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        posts = PostBlog.objects.filter(favourite=request.user)
+        posts = PostBlog.objects.filter(favourite=request.user).select_related('images', 'author').prefetch_related('favourite', 'tags')
         serializer = PostBlogSerializer(posts, many=True)
 
         return Response(serializer.data)
@@ -300,7 +300,6 @@ class AddFavouritePostView(APIView):
 
 
 class GetCommentsView(APIView):
-    queryset = Comments.objects.all()
     serializer_class = GetCommentsSerializer
     permission_classes = [permissions.AllowAny]
     
@@ -308,10 +307,10 @@ class GetCommentsView(APIView):
         blog_or_news = request.data.get('post')
         if blog_or_news == 'blog':
             post = get_object_or_404(PostBlog, slug=request.data.get('slug'))
-            comments = Comments.objects.filter(post_blog = post)
+            comments = Comments.objects.filter(post_blog = post).select_related('post_blog__images', 'post_news', 'author')
         elif blog_or_news == 'news':
             post = get_object_or_404(PostNews, slug=request.data.get('slug'))
-            comments = Comments.objects.filter(post_news = post)
+            comments = Comments.objects.filter(post_news = post).select_related('post_blog__images', 'post_news', 'author')
         else:
             return Response({'detail': 'Ошибка. Данной модели поста не существует'})
         serializer = self.serializer_class(comments, many=True)
@@ -319,7 +318,6 @@ class GetCommentsView(APIView):
 
 
 class CommentsView(APIView):
-    queryset = Comments.objects.all()
     serializer_class = CommentsSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -433,7 +431,6 @@ class CommentsView(APIView):
 
 
 class CommentsUserView(generics.ListAPIView):
-    queryset = Comments.objects.all()
     serializer_class = GetCommentsSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.OrderingFilter]
@@ -441,30 +438,30 @@ class CommentsUserView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        comments = Comments.objects.filter(author=user)
+        comments = Comments.objects.filter(author=user).select_related('post_blog__images', 'post_news', 'author')
         return comments
 
 
 
 class ReviewUserView(generics.ListAPIView):
-    queryset = Review.objects.all()
     serializer_class = GetReviewSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        review = Review.objects.filter(user=user)
+        review = Review.objects.filter(user=user).select_related('product__images', 'user')
         return review
 
 
 
 class ReviewView(APIView):
-    queryset = Review.objects.all()
     serializer_class = PostReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    def get_queryset(self):
+        return Review.objects.select_related('product__images', 'user').all()
+        
     def get(self, request):
-        review = Review.objects.all()
+        review = self.get_queryset()
         serializer = GetReviewSerializer(review, many=True)
         return Response(serializer.data)
 

@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #path('auth/', include('rest_framework.urls')),
     path('api/', include('core.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token'),
     path('api/refresh_token/', TokenRefreshView.as_view(), name='refresh_token'),
@@ -28,3 +29,10 @@ urlpatterns = [
     path('photologue/', include('photologue_custom.urls')),
     path('photologue/', include('photologue.urls'), name='photologue'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls))
+    ] + urlpatterns
