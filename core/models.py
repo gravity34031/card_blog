@@ -47,7 +47,7 @@ class PostNews(models.Model):
     slug = models.SlugField(unique=True)
     description = models.CharField(max_length=200)
     #image = models.ImageField(max_length=200, upload_to='news_posts/',blank=True)
-    image = ResizedImageField(force_format='WEBP', quality=100, max_length=200, blank=True, upload_to='news_posts/')
+    image = ResizedImageField(force_format='WEBP', quality=70, max_length=200, blank=True, upload_to='news_posts/')
     content = RichTextUploadingField()
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

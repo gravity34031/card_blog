@@ -12,6 +12,7 @@ from django_resized import ResizedImageField
 #for image compress
 from PIL import Image
 import os
+from datetime import datetime
 from .image_management import compress_image
 
 class FavouriteUserSerializer(serializers.ModelSerializer):
@@ -40,6 +41,12 @@ class PhotosSerializer(serializers.ModelSerializer):
         )
     def create(self, validated_data):
         image = validated_data.get('image', '')
+        
+        if not image.name.isascii():
+            now = datetime.now()
+            time = str(now).replace(' ', '').replace(':', '')
+            image.name = 'photologue/photos/' + time + '.jpg'
+       
         photo = Photo.objects.create(
             image = image,
             title = validated_data.get('title', ''),
@@ -47,12 +54,17 @@ class PhotosSerializer(serializers.ModelSerializer):
         )
         photo.save()
 
-
         #compress image & save
         img = Image.open(photo.image)
+        print('-'*75)
+        print(image)
+        print(photo.image)
+        print(img)
         img_path = settings.MEDIA_URL[1:] + str(photo.image)
         new_img_path = settings.MEDIA_URL[1:] + str(photo.image).split('.')[0] + '_compressed' + '.webp'
+        print(img_path, new_img_path)
         compress_image(img, img_path, new_img_path)
+        print(img_path, new_img_path)
         img.save(img_path, optimize=True) # optimize FULL image
         img.close()
 
