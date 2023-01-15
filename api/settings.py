@@ -35,7 +35,7 @@ else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1', '172.16.44.156']
+ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1', '172.16.44.156', 'localhost']
 
 
 # Application definition

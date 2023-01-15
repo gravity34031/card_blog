@@ -9,7 +9,10 @@ from django.contrib.auth.password_validation import validate_password
 #from django.contrib.contenttypes.models import ContentType
 from django_resized import ResizedImageField
 
-
+#for image compress
+from PIL import Image
+import os
+from .image_management import compress_image
 
 class FavouriteUserSerializer(serializers.ModelSerializer):
 
@@ -35,6 +38,26 @@ class PhotosSerializer(serializers.ModelSerializer):
             'slug',
             'image'
         )
+    def create(self, validated_data):
+        image = validated_data.get('image', '')
+        photo = Photo.objects.create(
+            image = image,
+            title = validated_data.get('title', ''),
+            slug = validated_data.get('slug', ''),
+        )
+        photo.save()
+
+
+        #compress image & save
+        img = Image.open(photo.image)
+        img_path = settings.MEDIA_URL[1:] + str(photo.image)
+        new_img_path = settings.MEDIA_URL[1:] + str(photo.image).split('.')[0] + '_compressed' + '.webp'
+        compress_image(img, img_path, new_img_path)
+        img.save(img_path, optimize=True) # optimize FULL image
+        img.close()
+
+        return photo
+
 
 # update, delete, get instance of the photo 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -50,7 +73,6 @@ class PhotoSerializer(serializers.ModelSerializer):
             'title': {'required': False},
             'slug': {'required': False}
         }
-
 
 """     def create(self, validated_data):
 
@@ -220,6 +242,24 @@ class PostNewsSerializer(serializers.ModelSerializer):
             'created_at',
             'author'
         )
+    def update(self, instance, validated_data):
+        old_image = ''
+        new_image = ''
+        if instance.image:
+            old_image = instance.image
+        if 'image' in validated_data:
+            new_image = validated_data['image']
+        instance.h1 = validated_data.get('h1', instance.h1)
+        instance.title = validated_data.get('title', instance.title)
+        instance.slug = validated_data.get('slug', instance.slug)
+        instance.description = validated_data.get('description', instance.description)
+        instance.content = validated_data.get('content', instance.content)
+        instance.image = validated_data.get('image', instance.image)
+        instance.save()
+
+        if old_image and new_image:
+            os.remove(settings.MEDIA_URL[1:] + str(old_image))
+        return instance
 
 
 
@@ -267,7 +307,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    avatar = ResizedImageField(("profile avatar"), size=[300, 300], crop=['middle', 'center'], max_length=128, blank=True)
 
     class Meta:
         model = User

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 from rest_framework import viewsets, permissions, generics, status, pagination, filters
 from rest_framework.views import APIView
 from .serializers import \
@@ -28,7 +29,8 @@ from .permissions import IsAdminOrReadOnly
 
 from django.core.files import File
 import io
-from .avatar import COLORS, create_avatar, delete_avatar
+import os
+from .image_management import COLORS, create_avatar, delete_avatar
 
 # Create your views here.
 
@@ -92,6 +94,15 @@ class GetUpdDelPhotoView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PhotoSerializer
     lookup_field = 'slug'
     permission_classes = [IsAdminOrReadOnly]
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.image.close()
+        image = str(instance.image)
+        compressed_image = image.split('.')[0] + '_compressed.webp'
+        self.perform_destroy(instance)
+        #os.remove(settings.MEDIA_URL[1:] + image)
+        os.remove(settings.MEDIA_URL[1:] + compressed_image)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 
@@ -188,6 +199,15 @@ class PostNewsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['h1', 'title', 'description', 'content']
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        image = ''
+        if instance.image:
+            image = str(instance.image)
+        self.perform_destroy(instance)
+        if image:
+            os.remove(settings.MEDIA_URL[1:] + image)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -246,7 +266,7 @@ class TagsViewList(generics.ListAPIView):
 
 
 class AsideBlogViewList(generics.ListAPIView):
-    queryset = PostBlog.objects.select_related('images', 'author').prefetch_related('favourite', 'tags').all().order_by('-created_at')[:3]
+    queryset = PostBlog.objects.all().order_by('-created_at')[:3]
     serializer_class = PostBlogSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -555,6 +575,7 @@ class UserRegisterView(generics.GenericAPIView):
             # etherwise there are two images
             
             delete_avatar(avatar_path, avatar)
+            avatar.close()
 
             return Response(
                 {'user': serializer.data,},
@@ -578,14 +599,23 @@ class UserProfileView(generics.GenericAPIView):
     def put(self, request):
         data = request.data
         user = request.user
+        old_avatar = str(user.avatar)
         instance = user
         serializer = self.get_serializer(data=data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({
-            'user': serializer.data
-        })
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            if 'avatar' in data:
+                try:
+                    os.remove(settings.MEDIA_URL[1:] + old_avatar)
+                except:
+                    pass
+            return Response({
+                'user': serializer.data
+            })
+        else:
+            return Response({
+                'detail': 'Ошибка'
+            })
 
     def get(self, request):
         user = request.user
@@ -596,7 +626,9 @@ class UserProfileView(generics.GenericAPIView):
 
     def delete(self, request):
         user = request.user
+        avatar = str(user.avatar)
         user.delete()
+        os.remove(settings.MEDIA_URL[1:] + avatar)
         return Response({'detail': 'Пользователь успешно удален'})
 
 

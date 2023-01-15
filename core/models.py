@@ -6,6 +6,7 @@ from photologue.models import Gallery
 from core.ru_taggit import RuTaggedItem
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
+from django_resized import ResizedImageField
 #from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 #from django.contrib.contenttypes.models import ContentType
 # Create your models here.
@@ -45,7 +46,8 @@ class PostNews(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField(unique=True)
     description = models.CharField(max_length=200)
-    image = models.ImageField(max_length=200, upload_to='news_posts/',blank=True)
+    #image = models.ImageField(max_length=200, upload_to='news_posts/',blank=True)
+    image = ResizedImageField(force_format='WEBP', quality=100, max_length=200, blank=True, upload_to='news_posts/')
     content = RichTextUploadingField()
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
