@@ -575,7 +575,6 @@ class UserRegisterView(generics.GenericAPIView):
             # etherwise there are two images
             
             delete_avatar(avatar_path, avatar)
-            avatar.close()
 
             return Response(
                 {'user': serializer.data,},

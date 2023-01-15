@@ -35,15 +35,15 @@ def create_avatar(msg):
         draw.text((W / 2, H / 2), msg, font=font, anchor='mm', fill=font_color)
         now = datetime.now()
         time = str(now).replace(' ', '').replace(':', '')
-        file_name = msg + '-' + time + '.png'
+        file_name = msg + '-' + time + '.webp'
         path = file_name
 
         img.save(path)
-        img.close()
         return path
 
 
 def delete_avatar(path, file):
+    file.close()
     try:
         print(path)
         os.remove(path)
