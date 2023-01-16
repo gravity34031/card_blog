@@ -2,7 +2,9 @@ from rest_framework import serializers
 from .models import PostBlog, PostNews, Comments, Review
 from taggit_serializer.serializers import TagListSerializerField, TaggitSerializer
 from taggit.models import Tag
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from photologue.models import Gallery, Photo, ImageModel
 from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
@@ -56,15 +58,10 @@ class PhotosSerializer(serializers.ModelSerializer):
 
         #compress image & save
         img = Image.open(photo.image)
-        print('-'*75)
-        print(image)
-        print(photo.image)
-        print(img)
-        img_path = settings.MEDIA_URL[1:] + str(photo.image)
-        new_img_path = settings.MEDIA_URL[1:] + str(photo.image).split('.')[0] + '_compressed' + '.webp'
-        print(img_path, new_img_path)
+        image_name = str(photo.image) 
+        img_path = settings.MEDIA_URL[1:] + image_name
+        new_img_path = settings.MEDIA_URL[1:] + image_name[:image_name.rfind('.')] + '_compressed' + '.webp'
         compress_image(img, img_path, new_img_path)
-        print(img_path, new_img_path)
         img.save(img_path, optimize=True) # optimize FULL image
         img.close()
 

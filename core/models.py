@@ -1,15 +1,31 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 from photologue.models import Gallery
 from core.ru_taggit import RuTaggedItem
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.utils.text import slugify
+
+from django.utils.translation import gettext_lazy as _
 from django_resized import ResizedImageField
+from django.contrib.auth.models import AbstractUser
+#from django.db.models.signals import post_save
+#from django.dispatch import receiver
+
 #from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 #from django.contrib.contenttypes.models import ContentType
 # Create your models here.
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+""" @receiver(post_save, sender=User)
+def create_user_useravatar(sender, instance, created, **kwargs):
+    if created:
+        UserAvatar.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def save_user_useravatar(sender, instance, **kwargs):
+    instance.profile.save() """
 
 
 

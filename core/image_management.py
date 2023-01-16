@@ -45,7 +45,7 @@ def create_avatar(msg):
 def delete_avatar(path, file):
     file.close()
     try:
-        print(path)
+        #print(path)
         os.remove(path)
     except:
         return ('Неизвестная ошибка при удалении аватара')

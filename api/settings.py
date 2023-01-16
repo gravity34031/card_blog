@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework',
     'core',
+    'user',
     'photologue_custom',
     'ckeditor',
     'ckeditor_uploader',
@@ -168,6 +169,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'user.User'
 
 
 # Internationalization

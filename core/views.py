@@ -13,7 +13,9 @@ from .serializers import \
     GetGallerySerializer, AddGallerySerializer, UpdGallerySerializer, \
     PhotosSerializer, PhotoSerializer
 from .models import PostBlog, PostNews, Comments, Review
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from taggit.models import Tag
 from taggit_serializer.serializers import TaggitSerializer
 from rest_framework.response import Response
