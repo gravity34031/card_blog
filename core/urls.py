@@ -4,7 +4,7 @@ from .views import \
     PostBlogViewSet, PostNewsViewSet, AddViewsToPostBlogView, \
     TagViewList, TagsViewList, DeleteTagView, \
     AsideBlogViewList, AsideNewsViewList, \
-    AddFavouritePostView, \
+    AddFavouritePostView, CheckPostIsFavouriteView, \
     GetCommentsView, CommentsView, CommentsUserView, \
     SearchPostsForReviewView, ReviewView, ReviewUserView, \
     UserRegisterView, UserProfileView, UserChangePasswordView, \
@@ -30,6 +30,7 @@ urlpatterns = [
     path('aside-blog/', AsideBlogViewList.as_view()),
     path('aside-news/', AsideNewsViewList.as_view()),
     path('favourite/', AddFavouritePostView.as_view()),
+    path('favourite/<slug:slug>/', CheckPostIsFavouriteView.as_view()),
     path('get_comments/', GetCommentsView.as_view()),
     path('comments/', CommentsView.as_view()),
     path('profile/comments/', CommentsUserView.as_view()),
