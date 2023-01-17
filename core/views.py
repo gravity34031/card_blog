@@ -306,13 +306,13 @@ class AddFavouritePostView(APIView):
 
         return Response(serializer.data)
 
-class CheckPostIsFavouriteView(generics.ListAPIView):
+""" class CheckPostIsFavouriteView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, slug):
         user = request.user
         post = PostBlog.objects.get(slug=slug)
-        return Response(user in post.favourite.all())
+        return Response(user in post.favourite.all()) """
 
 
 """ class IsFavouriteView(APIView):
