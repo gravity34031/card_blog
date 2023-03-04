@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import PostBlog, PostNews, Comments, Review
-from taggit_serializer.serializers import TagListSerializerField, TaggitSerializer
+from .taggit_serializer import TagListSerializerField, TaggitSerializer
 from taggit.models import Tag
 #from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model

@@ -17,7 +17,7 @@ from .models import PostBlog, PostNews, Comments, Review
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from taggit.models import Tag
-from taggit_serializer.serializers import TaggitSerializer
+from .taggit_serializer import TaggitSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
