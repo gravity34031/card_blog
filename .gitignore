@@ -15,8 +15,8 @@ myvenv
 venv
 my_venv
 
-.env.dev
-.env.prod
 .env
-.env.prod.db
+prod-db.env
+prod.env
+dev.env
 *.env
