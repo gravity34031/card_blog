@@ -1,0 +1,49 @@
+FROM python:3.10.0 as builder
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update
+RUN apt-get upgrade -y && apt-get install postgresql gcc python3-dev musl-dev -y
+RUN pip install --upgrade pip
+
+COPY . .
+
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+
+
+
+FROM python:3.10.0
+
+RUN mkdir -p /home/app
+
+RUN groupadd app
+RUN useradd -m -g app admin -p 4686
+RUN usermod -aG app admin
+
+ENV HOME = /home/app
+ENV APP_HOME = /home/app/web
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
+
+RUN apt-get update && \
+    apt-get install -y netcat
+
+COPY --from=builder /app/wheels /wheels
+COPY --from=builder /app/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+COPY ./entrypoint.prod.sh .
+
+RUN mkdir -p /home/app/web
+COPY . .
+
+RUN chown -R admin:app .
+
+USER admin
+
+ENTRYPOINT ["./entrypoint.prod.sh"]
+

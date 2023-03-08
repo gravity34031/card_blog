@@ -28,14 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-mbyx)7q_o#7)6y6tk3$7ujhjdld-vo7@2_ozo-sts(o&&(f7vp')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
-if os.environ.get('DJANGO_DEBUG', False):
-    DEBUG = False
-else:
-    DEBUG = True
+DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', default=1)))
 
 
-ALLOWED_HOSTS = ['card-blog-1.onrender.com', '127.0.0.1', '172.16.44.156', 'localhost']
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', \
+    '127.0.0.1 0.0.0.0 localhost').split(' ')
 
 
 # Application definition
@@ -85,7 +82,14 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
 }
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000", "http://172.16.44.156:3000"]
+""" CORS_ORIGIN_WHITELIST = ['http://'+i+':3000' for i in \
+    os.environ.get('DJANGO_CORS_ORIGIN_WHITELIST', \
+    'http://localhost:3000 http://127.0.0.1:3000').split(' ')] + \
+    ['http://'+i+':1337' for i in \
+    os.environ.get('DJANGO_CORS_ORIGIN_WHITELIST', \
+    'http://localhost:1337 http://127.0.0.1:1337').split(' ')] """
+CORS_ORIGIN_WHITELIST = os.environ.get('DJANGO_CORS_ORIGIN_WHITELIST', 'http://localhost:3000').split(' ')
+CSRF_TRUSTED_ORIGINS = CORS_ORIGIN_WHITELIST
 # Конец JWT токена
 
 # Настройки rest framework
@@ -126,30 +130,25 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'card_blog'),
-        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '46864238'),
-        'HOST': os.environ.get('POSTGRES_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('SQL_DATABASE', os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.environ.get('SQL_USER', 'user'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'password'),
+        'HOST': os.environ.get('SQL_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('SQL_PORT', '5432'),
     }
 }
-#internal
 """ DATABASES = {
-    'default': dj_database_url.config(
-        # Feel free to alter this value to suit your needs.
-        default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a/card_blog_1vre',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '123456',
+        'HOST': 'db',
+        'PORT': '5432'
+    }
 } """
-#external
-""" DATABASES = {
-    'default': dj_database_url.config(
-        # Feel free to alter this value to suit your needs.
-        default='postgres://card_blog_1vre_user:eWnuE3laRDqkkGvtcDkv8bpheUfgQQXR@dpg-cerfql4gqg486p00a9dg-a.frankfurt-postgres.render.com/card_blog_1vre',
-        conn_max_age=600
-    )
-} """
+
 
 
 # Password validation
@@ -192,10 +191,10 @@ USE_TZ = True
 
 SERVER_HOST = os.environ.get('SERVER_HOST', 'http://127.0.0.1:8000')
 
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
@@ -206,14 +205,15 @@ PHOTOLOGUE_IMAGE_FIELD_MAX_LENGTH = 128
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'gravity2507@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'ohkmvjkuvujpvukw')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 # debug_toolbar
 INTERNAL_IPS = [
     "127.0.0.1",
+    "0.0.0.0"
 ]
 
 

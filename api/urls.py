@@ -19,17 +19,21 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    #path('auth/', include('rest_framework.urls')),
-    path('api/', include('core.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token'),
-    path('api/refresh_token/', TokenRefreshView.as_view(), name='refresh_token'),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('photologue/', include('photologue_custom.urls')),
-    path('photologue/', include('photologue.urls'), name='photologue'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+try:
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        #path('auth/', include('rest_framework.urls')),
+        path('api/', include('core.urls')),
+        path('api/token/', TokenObtainPairView.as_view(), name='token'),
+        path('api/refresh_token/', TokenRefreshView.as_view(), name='refresh_token'),
+        path('ckeditor/', include('ckeditor_uploader.urls')),
+        path('photologue/', include('photologue_custom.urls')),
+        path('photologue/', include('photologue.urls'), name='photologue'),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+except Exception as e:
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+    ]
 
 if settings.DEBUG:
     import debug_toolbar
