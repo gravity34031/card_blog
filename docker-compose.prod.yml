@@ -8,7 +8,6 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn api.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - ./:/home/app/web
       - ./static:/home/app/web/static
       - ./media:/home/app/web/media
     expose:
@@ -28,7 +27,6 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./:/home/app/web
       - ./static:/home/app/web/static
       - ./media:/home/app/web/media
     depends_on:
