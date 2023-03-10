@@ -45,5 +45,5 @@ RUN chown -R admin:app .
 
 USER admin
 
-ENTRYPOINT ["./entrypoint.prod.sh"]
+ENTRYPOINT ["bash", "./entrypoint.prod.sh"]
 

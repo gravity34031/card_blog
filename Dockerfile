@@ -17,5 +17,5 @@ COPY ./entrypoint.sh .
 
 COPY . .
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["bash", "./entrypoint.sh"]
 
