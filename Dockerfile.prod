@@ -43,7 +43,7 @@ COPY . .
 
 RUN chown -R admin:app .
 
-USER admin
+#USER admin
 
 ENTRYPOINT ["bash", "./entrypoint.prod.sh"]
 
