@@ -21,23 +21,23 @@ from django.conf.urls.static import static
 
 try:
     urlpatterns = [
-        path('admin/', admin.site.urls),
-        #path('auth/', include('rest_framework.urls')),
+        path('api/admin/', admin.site.urls),
+        #path('api/auth/', include('rest_framework.urls')),
         path('api/', include('core.urls')),
         path('api/token/', TokenObtainPairView.as_view(), name='token'),
         path('api/refresh_token/', TokenRefreshView.as_view(), name='refresh_token'),
-        path('ckeditor/', include('ckeditor_uploader.urls')),
-        path('photologue/', include('photologue_custom.urls')),
-        path('photologue/', include('photologue.urls'), name='photologue'),
+        path('api/ckeditor/', include('ckeditor_uploader.urls')),
+        path('api/photologue/', include('photologue_custom.urls')),
+        path('api/photologue/', include('photologue.urls'), name='photologue'),
     ]
 except Exception as e:
     urlpatterns = [
-        path('admin/', admin.site.urls),
+        path('api/admin/', admin.site.urls),
     ]
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls))
+        path('api/__debug__/', include(debug_toolbar.urls))
     ] + urlpatterns
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

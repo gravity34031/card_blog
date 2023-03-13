@@ -182,12 +182,19 @@ USE_TZ = True
 SERVER_HOST = os.environ.get('SERVER_HOST', 'http://127.0.0.1:8000')
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/app/web/static'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/app/web/media'
-
-
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_PATH = MEDIA_URL[1:]
+    FONT_PATH = ''
+else:
+    STATIC_ROOT = '/home/app/web/static'
+    MEDIA_ROOT = '/home/app/web/media'
+    MEDIA_PATH = MEDIA_ROOT + '/'
+    FONT_PATH = '/usr/local/share/fonts/'
+    
 # PHOTOLOGUE
 PHOTOLOGUE_IMAGE_FIELD_MAX_LENGTH = 128
 

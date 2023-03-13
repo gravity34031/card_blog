@@ -102,8 +102,8 @@ class GetUpdDelPhotoView(generics.RetrieveUpdateDestroyAPIView):
         image = str(instance.image)
         compressed_image = image.split('.')[0] + '_compressed.webp'
         self.perform_destroy(instance)
-        #os.remove(settings.MEDIA_URL[1:] + image)
-        os.remove(settings.MEDIA_URL[1:] + compressed_image)
+        #os.remove(settings.MEDIA_PATH + image)
+        os.remove(settings.MEDIA_PATH + compressed_image)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
@@ -208,7 +208,7 @@ class PostNewsViewSet(viewsets.ModelViewSet):
             image = str(instance.image)
         self.perform_destroy(instance)
         if image:
-            os.remove(settings.MEDIA_URL[1:] + image)
+            os.remove(settings.MEDIA_PATH + image)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -614,7 +614,7 @@ class UserProfileView(generics.GenericAPIView):
             serializer.save()
             if 'avatar' in data:
                 try:
-                    os.remove(settings.MEDIA_URL[1:] + old_avatar)
+                    os.remove(settings.MEDIA_PATH + old_avatar)
                 except:
                     pass
             return Response({
@@ -636,7 +636,7 @@ class UserProfileView(generics.GenericAPIView):
         user = request.user
         avatar = str(user.avatar)
         user.delete()
-        os.remove(settings.MEDIA_URL[1:] + avatar)
+        os.remove(settings.MEDIA_PATH + avatar)
         return Response({'detail': 'Пользователь успешно удален'})
 
 

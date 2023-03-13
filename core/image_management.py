@@ -28,7 +28,9 @@ def create_avatar(msg):
         font_color = color[2]
 
         img = Image.new("RGB", (W, H), fill_color)
-        font = ImageFont.truetype("arial.ttf", size=100)
+        #font = ImageFont.truetype("arial.ttf", size=100)
+        #font = ImageFont.truetype("/usr/local/share/fonts/arial.ttf", size=100)
+        font = ImageFont.truetype(settings.FONT_PATH + "arial.ttf", size=100)
 
         draw = ImageDraw.Draw(img)
 
@@ -54,7 +56,6 @@ def delete_avatar(path, file):
 
 def compress_image(img, img_path, new_img_path):
     #start_time = time.time()
-
     def change_image_quality(img, img_path, quality):
         img.save(img_path, quality=quality)
 

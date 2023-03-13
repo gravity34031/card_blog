@@ -41,6 +41,8 @@ COPY ./entrypoint.prod.sh .
 RUN mkdir -p /home/app/web
 COPY . .
 
+COPY ./fonts/arial.ttf /usr/local/share/fonts
+
 RUN chown -R admin:app .
 
 #USER admin

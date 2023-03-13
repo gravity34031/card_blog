@@ -59,8 +59,8 @@ class PhotosSerializer(serializers.ModelSerializer):
         #compress image & save
         img = Image.open(photo.image)
         image_name = str(photo.image) 
-        img_path = settings.MEDIA_URL[1:] + image_name
-        new_img_path = settings.MEDIA_URL[1:] + image_name[:image_name.rfind('.')] + '_compressed' + '.webp'
+        img_path = settings.MEDIA_PATH + image_name
+        new_img_path = settings.MEDIA_PATH + image_name[:image_name.rfind('.')] + '_compressed' + '.webp'
         compress_image(img, img_path, new_img_path)
         img.save(img_path, optimize=True) # optimize FULL image
         img.close()
@@ -267,7 +267,7 @@ class PostNewsSerializer(serializers.ModelSerializer):
         instance.save()
 
         if old_image and new_image:
-            os.remove(settings.MEDIA_URL[1:] + str(old_image))
+            os.remove(settings.MEDIA_PATH + str(old_image))
         return instance
 
 
