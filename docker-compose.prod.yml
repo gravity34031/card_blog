@@ -24,7 +24,7 @@ services:
       - ./prod-db.env
   vue:
     build:
-      context: ../card_blog
+      context: ../card_blog_front
       dockerfile: Dockerfile.prod
     command: npm run start
 #    volumes:
